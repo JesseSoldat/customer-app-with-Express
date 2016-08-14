@@ -1,7 +1,9 @@
 var express = require('express'),
 	bodyParser = require('body-parser'),
+	mongojs = require('mongojs'),
 	path = require('path'),
 	expressValidator = require('express-validator');
+var db = mongojs('customerapp', ['users']);
 
 var app = express();
 
@@ -39,29 +41,34 @@ app.use(expressValidator({
   }
 })); 
 
-var people = [
-	{
-		fName: 'Jesse',
-		lName: 'Soldat',
-		age: 35
-	},
-	{
-		fName: 'Nate',
-		lName: 'Soldat',
-		age: 37
-	},
-	{
-		fName: 'Marcia',
-		lName: 'Soldat',
-		age: 70
-	}
-];
+// var people = [
+// 	{
+// 		fName: 'Jesse',
+// 		lName: 'Soldat',
+// 		age: 35
+// 	},
+// 	{
+// 		fName: 'Nate',
+// 		lName: 'Soldat',
+// 		age: 37
+// 	},
+// 	{
+// 		fName: 'Marcia',
+// 		lName: 'Soldat',
+// 		age: 70
+// 	}
+// ];
 var title = 'Customers';
 
 app.get('/',  function(req, res){
 	// res.send('Hello World');
 	// res.json(people);
-	res.render('index', {title: title, people: people, errors: res.locals.errors});
+	db.users.find(function(err, docs){
+		console.log(docs);
+		res.render('index', {title: title, people: docs, errors: res.locals.errors});
+	});
+
+	
 });
 
 app.post('/users/add', function(req, res){
