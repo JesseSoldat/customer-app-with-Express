@@ -1,0 +1,10 @@
+<% include partials/header %>
+	<h1>Hello <%= title %> from EJS</h1>
+	<ul>
+	<% people.forEach(function(person){ %>
+	<li><%= person.fName %> <%= person.lName %></li>
+	<% }) %>
+	</ul>
+<% include partials/footer %>
+
+
