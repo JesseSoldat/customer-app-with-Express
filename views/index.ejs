@@ -1,4 +1,31 @@
 <% include partials/header %>
+	<h1>Add Customer</h1>
+	<% if(errors){ %>
+	<ul>
+		<% errors.forEach(function(error){ %>
+		<li><%= error.msg %></li>
+		<% }) %>
+	</ul>
+
+
+
+
+	<% } %>
+	<form method="POST" action="/users/add">
+		<label>First Name</label>
+		<br>
+		<input type="text" name="fName">
+		<br>
+		<label>Last Name</label>
+		<br>
+		<input type="text" name="lName">
+		<br>
+		<label>Email</label>
+		<br>
+		<input type="email" name="email"> 
+		<br><br>
+		<input type="submit" value="Submit" name="">
+	</form>
 	<h1>Hello <%= title %> from EJS</h1>
 	<ul>
 	<% people.forEach(function(person){ %>
