@@ -71,7 +71,7 @@ app.get('/',  function(req, res){
 	
 });
 
-app.post('/users/add', function(req, res){
+app.post('/', function(req, res){
 
 	req.checkBody('fName', 'First Name is Required!').notEmpty();
 	req.checkBody('lName', 'Last Name is Required!').notEmpty();
@@ -80,10 +80,12 @@ app.post('/users/add', function(req, res){
 	errors = req.validationErrors();
 
 	if(errors){
-		res.render('index', {
-			title: title, 
-			people: people,
-			errors: errors
+		db.users.find(function(err, docs){
+			res.render('index', {
+				title: title, 
+				people: docs, 
+				errors: errors
+			});
 		});
 	} else {
 
@@ -92,11 +94,12 @@ app.post('/users/add', function(req, res){
 			lName: req.body.lName,
 			email: req.body.email
 		};
-		console.log(newUser);
-		res.render('index', {
-			title: title, 
-			people: people,
-			errors: res.locals.errors
+		db.users.insert(newUser, function(err, result){
+			if(err){
+				console.log(err);
+			} else {
+				res.redirect('/')
+			}
 		});	
 	}
 	
