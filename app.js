@@ -4,7 +4,7 @@ var express = require('express'),
 	path = require('path'),
 	expressValidator = require('express-validator');
 var db = mongojs('customerapp', ['users']);
-
+var ObjectId = mongojs.ObjectId;
 var app = express();
 
 // var logger = function(req, res, next){
@@ -64,7 +64,7 @@ app.get('/',  function(req, res){
 	// res.send('Hello World');
 	// res.json(people);
 	db.users.find(function(err, docs){
-		console.log(docs);
+		// console.log(docs);
 		res.render('index', {title: title, people: docs, errors: res.locals.errors});
 	});
 
@@ -103,6 +103,18 @@ app.post('/', function(req, res){
 		});	
 	}
 	
+});
+
+app.delete('/users/delete/:id', function(req, res){
+	console.log(req.params.id);
+	db.users.remove({_id: ObjectId(req.params.id) }, function(err){
+		if(err) {
+			console.log(err);
+		} else {
+			res.redirect('/');
+		}
+
+	})
 });
 
 var port = 3000;
